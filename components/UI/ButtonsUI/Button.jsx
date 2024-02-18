@@ -7,7 +7,7 @@ export default function Button() {
     { text: "Photos", link: "/photos" },
     { text: "Books", link: "/books" },
     { text: "Videos", link: "/videos" },
-    { text: "Tatos", link: "/" },
+    { text: "Tattoos", link: "/" },
     { text: "Deco", link: "/" },
     { text: "Logos", link: "/" },
     { text: "DIY", link: "/" },
