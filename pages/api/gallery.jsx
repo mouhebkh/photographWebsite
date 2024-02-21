@@ -4,7 +4,6 @@ export default async function galleryHandler(req, res) {
   try {
     let nextCursor = null;
     let allImages = [];
-
     do {
       // Fetch data for the current page
       const result = await fetchGalleryData(nextCursor);
@@ -17,7 +16,7 @@ export default async function galleryHandler(req, res) {
       // Update nextCursor for the next page
       nextCursor = newNextCursor;
     } while (nextCursor); // Continue fetching until nextCursor is null
-    
+
     res.status(200).json(allImages);
   } catch (error) {
     console.error("Error fetching data from Cloudinary:", error);
