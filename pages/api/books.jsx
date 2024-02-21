@@ -1,57 +1,58 @@
 import axios from "axios";
 
-// Cloudinary API endpoint to list resources in the Book folder
 const CLOUDINARY_API_ENDPOINT = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/resources/image`;
 
 export default async function handler(req, res) {
   try {
-    let nextCursor = null; // Initialize nextCursor to null
-
-    // Fetch all book images from Cloudinary
+    let nextCursor = null;
     let bookImages = [];
+    
     do {
-      // Fetch book images from Cloudinary with pagination
       const response = await axios.get(CLOUDINARY_API_ENDPOINT, {
         params: {
           type: "upload",
-          prefix: "Books", // Specify the "Books" folder as the prefix
-          next_cursor: nextCursor, // Include nextCursor if provided
-        },
-        headers: {
-          Authorization: `Basic ${Buffer.from(
+          prefix: "Books/",
+          next_cursor: nextCursor,
+          // Append a unique query parameter
+          timestamp: Date.now() // Or use any other unique identifier
+      },
+      headers: {
+        Authorization: `Basic ${Buffer.from(
             `${process.env.CLOUDINARY_API_KEY}:${process.env.CLOUDINARY_SECRET_KEY}`
-          ).toString("base64")}`,
-        },
+        ).toString("base64")}`,
+        // Add cache-control headers to prevent caching
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+    },
       });
-
-      // Append fetched book images to the bookImages array
+      
       bookImages = [...bookImages, ...response.data.resources];
-
-      // Update nextCursor for pagination
       nextCursor = response.data.next_cursor;
     } while (nextCursor);
-
+    
     if (bookImages.length === 0) {
-      // Handle case where no book images are found
       return res.status(404).json({ error: "No book images found" });
     }
+    
+    // Filter out duplicate images
+    const uniqueBookImages = Array.from(new Set(bookImages.map(image => image.public_id)))
+      .map(public_id => bookImages.find(image => image.public_id === public_id));
 
-    // Extract book data
-    const bookData = bookImages.map((image) => {
+    const bookData = uniqueBookImages.map((image) => {
       const bookName = image.public_id
-        .replace(/^Book\//, "")
+        .replace(/^Books\//, "")
         .replace(/\.(jpg|jpeg|png|gif|pdf)$/, "");
-      const isPdf = image.format === "pdf"; // Check if the format is PDF
+      const isPdf = image.format === "pdf";
       const pdfUrl = isPdf ? image.secure_url : null;
       return {
         title: bookName,
-        titleImageUrl: image.secure_url,
+        titleImageUrl: isPdf ? null : image.secure_url,
         pdfUrl: pdfUrl,
       };
     });
-
+    
     console.log("Fetch Book Data:", bookData);
-    // Send book data as JSON response
     res.status(200).json(bookData);
   } catch (error) {
     console.error("Error fetching book data:", error);

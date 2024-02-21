@@ -19,7 +19,7 @@ const contactSlice = createSlice({
       };
     },
     resetFormData(state) {
-      return initialState;
+      return initialState; // Reset the state to the initial state
     },
   },
 });

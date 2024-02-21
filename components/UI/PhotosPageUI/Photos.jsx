@@ -1,34 +1,12 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Image from "next/image";
-import axios from "axios";
-import { getRequest } from "@/public/Utills/allRequests";
+import LoadingSpinner from "../LoadingUI/LoadingSpinner";
+import NoDataFound from "../LoadingUI/NoDataFound";
+import { PhotosContext } from "@/contexts/photosContext/photosContext";
 
-export default function Gallery() {
-  const [loading, setLoading] = useState(true); // Initialize loading state as true
-  const [cloudinaryData, setCloudinaryData] = useState([]);
-
-  // Function to handle image load
-  const onImageLoad = () => {
-    setLoading(false); // Set loading state to false when image is loaded
-  };
-
-  // use useEffect to fetch the data
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getRequest("/api/photos"); // Call the API route created in the server-side code
-        setCloudinaryData(response.data); // Set fetched images to state
-        console.log("Fetched images:", response.data);
-      } catch (error) {
-        console.error("Error fetching data from Cloudinary:", error);
-      } finally {
-        setLoading(false); // Turn off loading state regardless of success or error
-      }
-    };
-
-    fetchData();
-  }, []);
+const Gallery = () => {
+  const { cloudinaryData, onImageLoad, loading } = useContext(PhotosContext);
 
   return (
     <div className="pt-32 sm:pt-52 w-[100%] mx-auto sm:px-5 px-2 sm:pb-32">
@@ -42,25 +20,16 @@ export default function Gallery() {
         <div className="grid grid-cols-12 sm:gap-4 gap-2 sm:mt-10 mt-5">
           {/* Show loading spinner when image is loading */}
           {loading ? (
-            <div className="col-span-12 flex items-center justify-center h-[50vh]">
-              <i className=" fa-solid fa-circle-notch lg:text-6xl text-4xl text-center text-pink-800 animate-spin"></i>
+            <div className="col-span-12 flex items-center justify-center h-[50vh]  2xl:h-[60vh]">
+              <LoadingSpinner />
             </div>
-          ) : cloudinaryData.length === 0 ? (
+          ) : // When no data found
+          cloudinaryData.length === 0 ? (
             <div className="col-span-12 text-center text-pink-800 ">
-              <p className="text-center sm:text-5xl my-4 font-bold">
-                No Data Available
-              </p>
-              <div>
-                <Image
-                  src={"/assets/Images/NoDataFound/img4.jpg"}
-                  alt="404 Error"
-                  className="object-cover w-full h-[80vh]"
-                  width={1000}
-                  height={1000}
-                />
-              </div>
+              <NoDataFound />
             </div>
           ) : (
+            // When data found, render images
             cloudinaryData.map((image, index) => (
               <div key={index} className={`col-span-4`}>
                 <div className="h-full">
@@ -81,4 +50,6 @@ export default function Gallery() {
       </div>
     </div>
   );
-}
+};
+
+export default Gallery;

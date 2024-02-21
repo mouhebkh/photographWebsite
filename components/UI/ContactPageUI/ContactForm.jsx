@@ -1,64 +1,16 @@
 "use client";
-import React, { useState } from "react";
-import emailjs from "emailjs-com";
-import { toast } from "react-toastify";
+import React, { useContext } from "react";
 import { ToastContainer } from "react-toastify";
+import { ContactContext } from "@/contexts/contactContextApi/contactContext";
 
-export default function ContactForm() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
+const ContactForm = () => {
+  const { formData, handleChange, handleSubmit } = useContext(ContactContext);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  // submit function
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Check if any of the fields are empty
-    if (!formData.name || !formData.email || !formData.message) {
-      console.error("Please fill out all fields");
-      toast.error("Please fill out all fields");
-      return;
-    }
-
-    // Send email using EmailJS
-    emailjs
-      .sendForm(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-        e.target,
-        process.env.NEXT_PUBLIC_EMAILJS_USER_ID
-      )
-      .then(
-        (result) => {
-          console.log("Email Successfully Sent", result.text);
-          // Optionally, reset the form after successful submission
-          setFormData({
-            name: "",
-            email: "",
-            message: "",
-          });
-          toast.success("Message Sent Successfully");
-        },
-        (error) => {
-          console.error("Error in sending email", error);
-        }
-      );
-  };
   return (
     <div>
       <ToastContainer />
       <form
-        className="flex flex-col space-y-4 sm:text-xl 2xl:text-2xl"
+        className="flex flex-col  space-y-4 sm:text-xl 2xl:text-2xl 2xl:w-[70%]"
         onSubmit={handleSubmit}
       >
         <div className="relative">
@@ -102,4 +54,6 @@ export default function ContactForm() {
       </form>
     </div>
   );
-}
+};
+
+export default ContactForm;

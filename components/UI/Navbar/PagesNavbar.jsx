@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Navbar3() {
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-[#051e2e] w-full sm:h-32 h-20 sm:p-10 p-4 flex  items-center">
+    <div className="fixed top-0 left-0 right-0 z-50 bg-black w-full sm:h-32 h-20 sm:p-10 p-4 flex  items-center">
       <ul className="flex justify-between items-center w-[100%] mx-auto sm:px-4 text-center">
         <li>
           {/* logo with a link to a home page */}

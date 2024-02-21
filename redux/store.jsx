@@ -1,13 +1,25 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { rootReducer } from "./Reducers/index";
-import { useDispatch, useSelector, useStore } from "react-redux";
+import {  useDispatch, useSelector } from "react-redux";
+import { combineReducers } from "redux";
+import contactReducer from "./Reducers/features/contactSlice";
 
-export const store = configureStore({
+const rootReducer = combineReducers({
+  contact: contactReducer,
+  // Add other reducers here if needed
+});
+const store = configureStore({
   reducer: {
     rootReducer,
   },
 });
 
-export const useAppDispatch = useDispatch;
-export const useAppSelector = useSelector;
-export const useAppStore = useStore;
+const { dispatch, getState } = store;
+
+const useAppSelector = useSelector;
+
+module.exports = {
+  store,
+  dispatch,
+  getState,
+  useAppSelector,
+};

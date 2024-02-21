@@ -2,9 +2,10 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import Head from "next/head";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ReduxProvider from "@/redux/provider";
+import store from '../redux/store'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,14 +19,20 @@ export default function RootLayout({ children }) {
     <>
       <html lang="en">
         <Head>
-          <meta
-            name="viewport"
-            content="initial-scale=1.0, width=device-width"
-          />
+          <meta charSet="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <meta name="description" content={metadata.description} />
+          <title>{metadata.title}</title>
           <link rel="icon" href="/favicon.ico" sizes="50x50" />
+          {/* Load Inter font */}
+          <link rel="stylesheet" href={inter.cssText} />
         </Head>
         <body className={inter.className}>
-          <ReduxProvider>{children}</ReduxProvider>
+          <ReduxProvider >
+            {children}
+            {/* Toast notifications container */}
+            <ToastContainer />
+          </ReduxProvider>
         </body>
       </html>
     </>

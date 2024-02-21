@@ -1,18 +1,15 @@
 import { Suspense } from "react";
 import NavbarPages from "@/components/UI/Navbar/PagesNavbar";
-import GridView from "@/components/UI/GridView/GridView";
-import Carousel from "@/components/UI/Carousel/Carousel";
 import Button from "@/components/UI/ButtonsUI/Button";
+import CombinedComponent from "@/components/UI/GridView/Combined";
 
 export default function Home() {
   return (
     <>
-      <div className="w-[100%] h-full min-h-screen bg-[#051e2e]">
+      <div className="w-[100%] h-full min-h-screen bg-black">
         <NavbarPages />
-        <Carousel />
-
         <Suspense fallback={<loading />}>
-          <GridView />
+          <CombinedComponent />
         </Suspense>
         <Button />
       </div>
