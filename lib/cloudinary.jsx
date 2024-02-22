@@ -7,7 +7,7 @@ export async function fetchData(nextCursor) {
       {
         params: {
           type: "upload",
-          prefix: "Photos", // Specify the "Images" folder as the prefix
+          prefix: "images", // Specify the "Images" folder as the prefix
           ...(nextCursor && { next_cursor: nextCursor }), // Include nextCursor if provided
         },
         headers: {

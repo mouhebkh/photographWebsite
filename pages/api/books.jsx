@@ -11,7 +11,7 @@ export default async function handler(req, res) {
       const response = await axios.get(CLOUDINARY_API_ENDPOINT, {
         params: {
           type: "upload",
-          prefix: "Books/",
+          prefix: "ArtBooks/",
           next_cursor: nextCursor,
           // Append a unique query parameter
           timestamp: Date.now() // Or use any other unique identifier
