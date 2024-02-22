@@ -1,3 +1,4 @@
+
 import { Inter } from "next/font/google";
 import "./globals.css";
 import "@fortawesome/fontawesome-free/css/all.css";
@@ -33,7 +34,11 @@ export default function RootLayout({ children }) {
             {/* Toast notifications container */}
             <ToastContainer />
           </ReduxProvider>
+           {/* Add AOS script */}
+           <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+          <script dangerouslySetInnerHTML={{ __html: 'AOS.init();' }} />
         </body>
+        
       </html>
     </>
   );

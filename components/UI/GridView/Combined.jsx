@@ -7,7 +7,7 @@ import Carousel from "../Carousel/Carousel";
 import GridView from "./GridView";
 import { CarouselProvider } from "@/contexts/carouselContext/CarouselProvider";
 import { fetchCarouselData } from "@/contexts/carouselContext/fetchCarouselData";
-import { GalleryProvider } from "@/contexts/gridContext/GalleryProvider";
+import { GalleryProvider } from "@/contexts/gridContext/galleryProvider";
 import { fetchGalleryImage } from "@/contexts/gridContext/fetchGalleryData";
 
 export default function CombinedComponent() {

@@ -7,10 +7,10 @@ const ContactForm = () => {
   const { formData, handleChange, handleSubmit } = useContext(ContactContext);
 
   return (
-    <div>
+    <div className="flex max-2xl:items-end max-lg:justify-center max-2xl:justify-end 2xl:justify-center lg:pr-14 xl:pr-8 2xl:pr-1">
       <ToastContainer />
       <form
-        className="flex flex-col  space-y-4 sm:text-xl 2xl:text-2xl 2xl:w-[70%]"
+        className="flex flex-col  space-y-4 sm:text-xl 2xl:text-2xl 2xl:w-[60%] xl:w-[80%] "
         onSubmit={handleSubmit}
       >
         <div className="relative">
@@ -21,7 +21,7 @@ const ContactForm = () => {
             placeholder="Name"
             value={formData.name}
             onChange={handleChange}
-            className="border border-gray-300 w-[100%] rounded-md pl-10 pr-3 py-2 2xl:py-4 focus:border-pink-800"
+            className="border border-gray-300 w-[100%] rounded-md pl-10 pr-3 py-2 2xl:py-3 focus:border-pink-800"
           />
         </div>
         <div className="relative">
@@ -32,7 +32,7 @@ const ContactForm = () => {
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
-            className="border border-gray-300 w-[100%] 2xl:py-4 rounded-md pl-10 pr-3 py-2 focus:border-pink-800"
+            className="border border-gray-300 w-[100%] 2xl:py-3 rounded-md pl-10 pr-3 py-2 focus:border-pink-800"
           />
         </div>
         <textarea
@@ -40,7 +40,7 @@ const ContactForm = () => {
           placeholder="Message"
           value={formData.message}
           onChange={handleChange}
-          className="border border-gray-300 rounded-md px-3 py-2 h-32 focus:border-pink-800"
+          className="border border-gray-300 rounded-md px-3  w-[100%] py-2 h-32 focus:border-pink-800"
         ></textarea>
 
         {/* submit button */}
