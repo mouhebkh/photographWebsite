@@ -7,7 +7,7 @@ export default function HomeContent() {
     <div className="w-[100%] h-full   ">
       <div className="max-sm:pt-20">
         <Image
-          src="/assets/Images/layout-img/homeNewImage.jpeg"
+          src="/assets/Images/layout-img/home1.png"
           alt="Home Image"
           className="w-full md:h-[74vh] xl:h-[78vh] h-[60vh]"
           width={1000}
