@@ -1,15 +1,25 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { ToastContainer } from "react-toastify";
 import { ContactContext } from "@/contexts/contactContextApi/contactContext";
-
 const ContactForm = () => {
-  const { formData, handleChange, handleSubmit } = useContext(ContactContext);
+  const { formData, handleChange, handleSubmit, form } = useContext(ContactContext);
+
 
   return (
     <div className="flex max-2xl:items-end max-lg:justify-center max-2xl:justify-end 2xl:justify-center lg:pr-14 xl:pr-8 2xl:pr-1">
       <ToastContainer />
+      {/* <form ref={form} onSubmit={handleSubmit}>
+      <label>Name</label>
+      <input type="text" name="name" />
+      <label>Email</label>
+      <input type="email" name="email" />
+      <label>Message</label>
+      <textarea name="message" />
+      <input type="submit" value="Send" />
+    </form> */}
       <form
+        ref={form}
         className="flex flex-col  space-y-4 sm:text-xl 2xl:text-2xl 2xl:w-[60%] xl:w-[80%] "
         onSubmit={handleSubmit}
       >
@@ -42,8 +52,6 @@ const ContactForm = () => {
           onChange={handleChange}
           className="border border-gray-300 rounded-md px-3  w-[100%] py-2 h-32 focus:border-pink-800"
         ></textarea>
-
-        {/* submit button */}
         <button
           type="submit"
           className="bg-pink-800 2xl:text-2xl 2xl:py-4 font-semibold text-white px-4 py-2 rounded-md hover:bg-pink-800
