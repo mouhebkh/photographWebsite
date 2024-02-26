@@ -15,16 +15,16 @@ export default async function handler(req, res) {
           next_cursor: nextCursor,
           // Append a unique query parameter
           timestamp: Date.now() // Or use any other unique identifier
-      },
-      headers: {
-        Authorization: `Basic ${Buffer.from(
-            `${process.env.CLOUDINARY_API_KEY}:${process.env.CLOUDINARY_SECRET_KEY}`
-        ).toString("base64")}`,
-        // Add cache-control headers to prevent caching
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-        Pragma: "no-cache",
-        Expires: "0",
-    },
+        },
+        headers: {
+          Authorization: `Basic ${Buffer.from(
+              `${process.env.CLOUDINARY_API_KEY}:${process.env.CLOUDINARY_SECRET_KEY}`
+          ).toString("base64")}`,
+          // Add cache-control headers to prevent caching
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
       });
       
       bookImages = [...bookImages, ...response.data.resources];
@@ -35,9 +35,15 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: "No book images found" });
     }
     
-    // Filter out duplicate images
-    const uniqueBookImages = Array.from(new Set(bookImages.map(image => image.public_id)))
-      .map(public_id => bookImages.find(image => image.public_id === public_id));
+    // Filter out duplicate images and exclude cached images
+    const uniqueBookImages = bookImages
+      .filter(image => !image.url.includes("timestamp")) // Modify this to your timestamp parameter
+      .filter(image => !image.url.includes("version")) // Or modify for version parameter
+      .map((image) => ({
+        public_id: image.public_id,
+        secure_url: image.secure_url,
+        format: image.format
+      }));
 
     const bookData = uniqueBookImages.map((image) => {
       const bookName = image.public_id
@@ -51,7 +57,7 @@ export default async function handler(req, res) {
         pdfUrl: pdfUrl,
       };
     });
-    
+
     console.log("Fetch Book Data:", bookData);
     res.status(200).json(bookData);
   } catch (error) {

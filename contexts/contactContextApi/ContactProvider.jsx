@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { ContactContext } from "./contactContext";
 import emailjs from "emailjs-com";
 import { toast } from "react-toastify";
@@ -10,7 +10,6 @@ export const ContactProvider = ({ children }) => {
     email: "",
     message: "",
   });
-  const form = useRef();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,16 +29,13 @@ export const ContactProvider = ({ children }) => {
       toast.error("Please fill out all fields");
       return;
     }
-    console.log('formData',formData);
-    console.log('test',e.target);
-    console.log('form', form.current)
 
     // Send email using EmailJS
     emailjs
       .sendForm(
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-        form.current,
+        e.target,
         process.env.NEXT_PUBLIC_EMAILJS_USER_ID
       )
       .then(
@@ -61,7 +57,7 @@ export const ContactProvider = ({ children }) => {
   };
 
   return (
-    <ContactContext.Provider value={{ formData, handleChange, handleSubmit, form }}>
+    <ContactContext.Provider value={{ formData, handleChange, handleSubmit }}>
       {children}
     </ContactContext.Provider>
   );
